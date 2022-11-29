@@ -68,7 +68,7 @@ Initialize_Remove <- function (DB, k, mconf) {
   # Calculate minimum number of items m required to generate k rules based on k.
   m <- k * (2/15) # Derived from the example in the article (Propert 5). 
   
-  # Sort items in the database based descending order of support.
+  # Sort items in the database based on descending order of support.
   DB1 <- sortDescBasedOnSup(DB) 
   
   # A list of minimum number of items m required to generate k rules.
@@ -107,6 +107,7 @@ conf <- function(DB, x, y) {
     return (confidence)
 }
 
+# Calculate the minimum confidence value for an item x 
 minConf <- function(x, DB) {
   maxTid = -1
   print(x)
@@ -118,20 +119,30 @@ minConf <- function(x, DB) {
   return(length(tids(x))/maxTid)
 }
 
-minSup <- function(x, data) {
-   return(length(tids(x))/length(data))
+# Calculate the minimum support
+minSup <- function(x, DB) {
+   return(length(tids(x))/length(DB))
 }
 
-tids <- function(x, data) {
+# Tids is the transaction identifier of a set of items.
+# tids(x) - how many transactions (columns) have item x?
+# tids(x,y) - how many transactions (columns) have items x and y combined?
+tids <- function(x, DB) {
   # query from db to get the tids for given set of items
+  tidset <- which(DB[x, ] !=0)
+  return(length(tidset))
 }
 
+#Sort in descending order based on support.
 sortDescBasedOnSup <- function(x) {
   swap_done <- TRUE
   while (swap_done) {
     swap_done <- FALSE
+    # For each item in the database
     for (i in 1:(length(x) - 1)) {
+      # If support of the item at index x[i] is greater than the support of the item that is next in the list
       if (sup(x[i]) < sup(x[i + 1])) {
+        # Then assign the item to a temporary list
         tmp <- x[i]
         x[i] <- x[i + 1]
         x[i + 1] <- tmp
@@ -140,6 +151,20 @@ sortDescBasedOnSup <- function(x) {
     }
   }
   return(x)
+}
+
+# Alternate function for sorting based on support
+SDBS <- function(DB) {
+  #Define an empty vector
+  support <- c()
+  #for each item in the database
+  for i in DB {
+    #Append the support of each item to the list
+    support <- c(support, sup(i))
+  }
+  #Sort in descending order
+  swapped <- DB[order(support) , ]
+  return(swapped)
 }
 
 # Algorithm 3 - Save
@@ -237,3 +262,4 @@ expand_L <- function(r, L, R, k, minsup, minconf) {
       }
     }
   }
+
