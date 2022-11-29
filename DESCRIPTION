@@ -1,0 +1,13 @@
+Package: AutoFTRAM
+Type: Package
+Title: Mining Association Rules
+Version: 0.1.0
+Author: c(person("Sharon", "Jason", "Jayakrishna", "Trilok", role = c("aut", "cre", "cph"),
+		email = "pamulapj@mail.gvsu.edu"))
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: Provides the framework for examining transactional data and patterns (frequent itemsets and association rules). 
+Provides r implementations of the association mining algorithms FTARM.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true.
+URL: https://github.com/skirwa/AutoFTRAM
